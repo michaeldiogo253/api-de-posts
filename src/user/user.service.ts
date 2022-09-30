@@ -1,3 +1,4 @@
+import { UserEntity } from './entities/user.entity';
 import { UserRepository } from './../repository/user.repository';
 import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -10,37 +11,39 @@ export class UserService {
 
   }
 
-  create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
 
     if (this.userRepository.existsUserByEmail(createUserDto.email)) {
       throw new BadRequestException("Email já cadastrado na base de dados");
     }
 
-    return this.userRepository.criarUsuario(createUserDto);
+    return await this.userRepository.criarUsuario(createUserDto);
 
   }
 
-  findByEmail(email: string) {
-    return this.userRepository.findUserByEmail(email);
+  async findByEmail(email: string) {
+    return await this.userRepository.findUserByEmail(email);
   }
 
-  findAll() {
-    return this.userRepository.findAllUsers();
+  async findAll() {
+
+    return await this.userRepository.findAllUsers();
+
   }
 
-  findOne(id: number) {
-    return this.userRepository.findUserById(id);
+  async findOne(id: number) {
+    return await this.userRepository.findUserById(id);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return this.userRepository.atualizarUser(id, updateUserDto);
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    return await this.userRepository.atualizarUser(id, updateUserDto);
   }
 
-  remove(id: number) {
+  async remove(id: number) {
     if (!this.userRepository.existsUserById(id)) {
       throw new NotFoundException("Usuario nao encontrado");
     }
 
-    return this.userRepository.deleteUserById(id);
+    return await this.userRepository.deleteUserById(id);
   }
 }

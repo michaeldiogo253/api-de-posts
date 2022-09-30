@@ -67,7 +67,12 @@ export class UserPersistenceAdapter implements UserRepository {
     }
 
     async findAllUsers(): Promise<UserEntity[]> {
-        return await this.prisma.user.findMany();
+        
+        const users = await this.prisma.user.findMany();
+
+       throw new Error("Erro!");
+
+        return users;
     }
 
     async deleteUserById(idUser: number) {
