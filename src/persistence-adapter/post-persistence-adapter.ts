@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException, Param, Put } from "@nestjs/common";
 import { Post } from "@prisma/client";
+import { AtualizarPostRequest } from "src/post/dto/atualizar-post.request";
 import { CadastrarPostRequest } from "src/post/dto/cadastrar-post.request";
 import { PrismaService } from "src/prisma/prisma.service";
 import { PostRepository } from "src/repository/post.repository";
@@ -12,11 +13,13 @@ export class PostPersistenceAdapter implements PostRepository {
 
     }
 
+
     async findAllPost(): Promise<Post[]> {
-       return await this.prisma.post.findMany();
+        return await this.prisma.post.findMany();
     }
 
     async createPost(postRequest: CadastrarPostRequest) {
+
         return await this.prisma.post.create({
             data: {
                 title: postRequest.title,
@@ -74,13 +77,42 @@ export class PostPersistenceAdapter implements PostRepository {
         return true;
     }
 
-    async deletePostById(idPost: number){
+    async deletePostById(idPost: number) {
         await this.prisma.post.delete({
             where: {
                 id: idPost
             }
         });
 
+    }
+
+    async updatePost(request: AtualizarPostRequest): Promise<Post> {
+        return await this.prisma.post.update({
+            where: {
+                id: request.idPost
+            },
+            data: {
+                title: request.title,
+                content: request.content,
+            }
+        });
+    }
+
+    async updatePostEAutorDoPost(request: AtualizarPostRequest): Promise<Post> {
+        return await this.prisma.post.update({
+            where: {
+                id: request.idPost
+            },
+            data: {
+                title: request.title,
+                content: request.content,
+                author: {
+                    connect: {
+                        email: request.authorEmail
+                    }
+                }
+            }
+        });
     }
 
 }

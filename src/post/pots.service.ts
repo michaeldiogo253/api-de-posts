@@ -1,3 +1,5 @@
+import { AtualizarPostRequest } from './dto/atualizar-post.request';
+import { UserRepository } from './../repository/user.repository';
 import { PostRepository } from './../repository/post.repository';
 import { Get, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { CadastrarPostRequest } from './dto/cadastrar-post.request';
@@ -6,7 +8,8 @@ import { CadastrarPostRequest } from './dto/cadastrar-post.request';
 export class PostService {
 
 
-    constructor(@Inject(PostRepository) private postRepository: PostRepository) {
+    constructor(@Inject(PostRepository) private postRepository: PostRepository,
+        @Inject(UserRepository) private userRepository: UserRepository) {
 
     }
 
@@ -15,6 +18,10 @@ export class PostService {
     }
 
     async createPost(createRequest: CadastrarPostRequest) {
+
+        if (!await this.userRepository.existsUserByEmail(createRequest.authorEmail)) {
+            throw new NotFoundException(`Usuario com email: ${createRequest.authorEmail} nao foi encontrado`);
+        }
 
         return await this.postRepository.createPost(createRequest);
     }
@@ -46,5 +53,19 @@ export class PostService {
 
     async findAllPosts() {
         await this.postRepository.findAllPost();
+    }
+
+    async updatePost(request: AtualizarPostRequest) {
+
+
+        if (!request.authorEmail) {
+            return await this.postRepository.updatePost(request);
+        }
+
+        if (!await this.userRepository.existsUserByEmail(request.authorEmail)) {
+            throw new NotFoundException(`Usuario com email: ${request.authorEmail} nao foi encontrado`);
+        }
+
+        return await this.postRepository.updatePostEAutorDoPost(request);
     }
 }

@@ -1,4 +1,5 @@
 import { Post } from "@prisma/client";
+import { AtualizarPostRequest } from "src/post/dto/atualizar-post.request";
 import { CadastrarPostRequest } from "src/post/dto/cadastrar-post.request";
 
 export interface PostRepository {
@@ -10,6 +11,9 @@ export interface PostRepository {
     existsPostById(id: number): Promise<Boolean>;
     deletePostById(id: number):Promise<void>;
     findAllPost(): Promise<Post[]>;
+    updatePostEAutorDoPost(request: AtualizarPostRequest): Promise<Post>;
+    updatePost(request: AtualizarPostRequest): Promise<Post>;
+
 }
 
 export const PostRepository = Symbol('PostRepository');
