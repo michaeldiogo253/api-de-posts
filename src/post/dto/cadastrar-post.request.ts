@@ -1,8 +1,8 @@
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CadastrarPostRequest {
 
     @IsString() @IsNotEmpty() title: string;
-    @IsNotEmpty() content?: string;
+    @IsString() @IsOptional() content?: string;
     @IsEmail() @IsNotEmpty() authorEmail: string
 }

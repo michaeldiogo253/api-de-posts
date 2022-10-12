@@ -1,7 +1,7 @@
 import { UpdateUserDto } from './../user/dto/update-user.dto';
 import { User } from "@prisma/client";
 import { CreateUserDto } from "src/user/dto/create-user.dto";
-import { UserEntity } from "src/user/entities/user.entity";
+import { UserEntity } from "src/user/user.entity";
 
 export interface UserRepository{
 
