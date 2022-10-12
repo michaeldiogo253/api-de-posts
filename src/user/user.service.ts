@@ -1,4 +1,3 @@
-import { UserEntity } from './entities/user.entity';
 import { UserRepository } from './../repository/user.repository';
 import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -13,7 +12,7 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto) {
 
-    if (this.userRepository.existsUserByEmail(createUserDto.email)) {
+    if (await this.userRepository.existsUserByEmail(createUserDto.email)) {
       throw new BadRequestException("Email já cadastrado na base de dados");
     }
 
