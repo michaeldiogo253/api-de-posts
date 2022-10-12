@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { UpdateUserDto } from 'src/user/dto/update-user.dto';
-import { UserEntity } from 'src/user/entities/user.entity';
+import { UserEntity } from 'src/user/user.entity';
 import { UserRepository } from './../repository/user.repository';
 
 @Injectable()
@@ -20,6 +20,7 @@ export class UserPersistenceAdapter implements UserRepository {
         });
 
         if (existEmail) {
+
             return true;
         }
 
@@ -67,10 +68,8 @@ export class UserPersistenceAdapter implements UserRepository {
     }
 
     async findAllUsers(): Promise<UserEntity[]> {
-        
-        const users = await this.prisma.user.findMany();
 
-       throw new Error("Erro!");
+        const users = await this.prisma.user.findMany();
 
         return users;
     }
