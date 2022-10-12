@@ -1,3 +1,4 @@
+import { AtualizarPostRequest } from './dto/atualizar-post.request';
 import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put } from "@nestjs/common";
 import { CadastrarPostRequest } from "./dto/cadastrar-post.request";
 import { PostService } from "./pots.service";
@@ -39,4 +40,11 @@ export class PostController {
         return await this.postService.findAllPosts();
 
     }
+    @Put('update')
+    async updatePost(@Body() request: AtualizarPostRequest) {
+
+        return await this.postService.updatePost(request);
+
+    }
+
 }
